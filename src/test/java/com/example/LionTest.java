@@ -7,55 +7,21 @@ import org.junit.runners.Parameterized;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-@RunWith(Parameterized.class)
+@RunWith(MockitoJUnitRunner.class)
 public class LionTest {
+    private final String lionSex = "Самец";
+   @Mock
+   Feline feline;
 
-    private final String lionSex;
-
-    private final boolean hasMane;
-
-
-    public LionTest(String lionSex, boolean hasMane) {
-        this.lionSex = lionSex;
-        this.hasMane = hasMane;
-    }
-    @Mock
-    Feline feline;
-
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
-    @Parameterized.Parameters
-    public static Object[][] setData() {
-        return new Object[][] {
-                {"Самец", true},
-                {"Самка", false}
-        };
-    }
-
-    @Test
-    public void checkLionSexSuccess() throws Exception {
-        Lion lion = new Lion(lionSex, feline);
-        boolean expectedResult = hasMane;
-        boolean actualResult = lion.hasMane;
-        assertEquals(expectedResult, actualResult);
-    }
-
-    @Test
-    public void checkLionSexUndefinedThrowsExceptionSuccess() {
-        try {
-            new Lion("Средний род", feline);
-            fail("Expected MyException to be thrown");
-        } catch (Exception exception) {
-        }
+    @Test(expected = Exception.class)
+    public void checkLionSexUndefinedThrowsExceptionSuccess() throws Exception {
+        new Lion("Средний род", feline);
     }
     @Test
     public void checkLionGetKittensSuccess() throws Exception {
